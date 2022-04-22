@@ -63,6 +63,3 @@ class Poe_trade:
             listings_list.append((price, stock))
 
         return listings_list
-
-trade = Poe_trade()
-print(trade.price_check_bulk('ancient-orb', 5))

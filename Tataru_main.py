@@ -54,9 +54,11 @@ async def roll(ctx, *args):
 async def bulk_check(ctx, item):
     listings = trade.price_check_bulk(item, 5)
     response = 'Tataru says:\n'
+    response += '```'
     for listing in listings:
-        response += f'> Price: {listing[0]} \t exalt \t Stock: {listing[1]}\n'
+        response += f'Price: {listing[0]} \t exalt \t Stock: {listing[1]}\n'
     response = response[:-1]
+    response += '```'
     await ctx.send(response)
 
 @bot.command(name="doujin_no")

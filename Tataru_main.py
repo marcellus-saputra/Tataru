@@ -17,6 +17,13 @@ bot = commands.Bot(command_prefix="%")
 
 bj_model = bj_mw.Blackjack_mw()
 
+@bot.event
+async def on_ready():
+    guild = discord.utils.get(bot.guilds, name=GUILD)
+    print(f'{bot.user} has connected to {guild.name}!')
+    print("Populating Blackjack model...")
+    bj_model.populate()
+
 @bot.command(name="bj_chance")
 async def bj_chance(ctx, player_hand, player_has_ace, dealer_hand):
     try:
@@ -97,11 +104,5 @@ async def doujin(ctx):
     response = f'Tataru recommends (after {tries} tries):\n{url}'
     await ctx.send(response)
 
-@bot.event
-async def on_ready():
-    guild = discord.utils.get(bot.guilds, name=GUILD)
-    print(f'{bot.user} has connected to {guild.name}!')
-    print("Populating Blackjack model...")
-    bj_model.populate()
 
 bot.run(TOKEN)

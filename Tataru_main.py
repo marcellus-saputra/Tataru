@@ -19,7 +19,6 @@ bj_model = bj_mw.Blackjack_mw()
 
 @bot.command(name="bj_chance")
 async def bj_chance(ctx, player_hand, player_has_ace, dealer_hand):
-    dealer_has_ace = False
     try:
         player_hand = int(player_hand)
         player_has_ace = player_has_ace.lower() == 't'

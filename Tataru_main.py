@@ -8,27 +8,30 @@ import asyncio
 from lib import bj_mw
 from lib import poe_trade
 
-load_dotenv()
-TOKEN = os.getenv('DISCORD_TOKEN')
-GUILD = os.getenv('DISCORD_GUILD')
+class BotData:
+    def __init__(self):
+        load_dotenv()
+        self.TOKEN = os.getenv('DISCORD_TOKEN')
+        self.GUILD = os.getenv('DISCORD_GUILD')
 
-doujin_max = 1000000
+        self.doujin_max = 1000000
 
+        print("Initializing PoE Trade integration...")
+        self.trade = poe_trade.Poe_trade()
+        self.bulk_listings_to_display = 5
+
+        self.bj_model = bj_mw.Blackjack_mw()
+
+
+bd = BotData()
 bot = commands.Bot(command_prefix="%")
-
-print("Initializing PoE Trade integration...")
-trade = poe_trade.Poe_trade()
-
-bj_model = bj_mw.Blackjack_mw()
-
-bulk_listings_to_display = 5
 
 @bot.event
 async def on_ready():
-    guild = discord.utils.get(bot.guilds, name=GUILD)
+    guild = discord.utils.get(bot.guilds, name=bd.GUILD)
     print(f'{bot.user} has connected to {guild.name}!')
     print("Populating Blackjack model...")
-    bj_model.populate()
+    bd.bj_model.populate()
 
 @bot.command(name="bj_chance")
 async def bj_chance(ctx, player_hand, player_has_ace, dealer_hand):
@@ -43,7 +46,7 @@ async def bj_chance(ctx, player_hand, player_has_ace, dealer_hand):
         await ctx.send(response)
         return
 
-    stay_chance, hit_chance, best_action = bj_model.chance(player_hand, player_has_ace, dealer_hand, dealer_has_ace)
+    stay_chance, hit_chance, best_action = bd.bj_model.chance(player_hand, player_has_ace, dealer_hand, dealer_has_ace)
     response = f'Tataru says:\n> Chance to win if STAY: {stay_chance:.2f}%\n> Chance to win if HIT: {hit_chance:.2f}%\n> Best course of action: {best_action}'
     await ctx.send(response)
 
@@ -54,7 +57,7 @@ async def roll(ctx, *args):
 
 @bot.command(name="bc")
 async def bulk_check(ctx, item):
-    listings = trade.price_check_bulk(item, bulk_listings_to_display)
+    listings = bd.trade.price_check_bulk(item, bd.bulk_listings_to_display)
     response = 'Tataru says:\n'
     response += '```'
     for listing in listings:
@@ -66,14 +69,15 @@ async def bulk_check(ctx, item):
 @bot.command(name="set_bulk_listings_to_display")
 async def set_bulk_listings_to_display(ctx, i):
     try:
-        int(i)
+        i = int(i)
         if i <= 0:
             response = 'Tataru says:\n> Cannot set to a number <= 0.'
         else:
-            bulk_listings_to_display = i
-            response = f'Tataru says:\n> Now displaying {bulk_listings_to_display} on bulk price checks...'
+            bd.bulk_listings_to_display = i
+            response = f'Tataru says:\n> Now displaying {bd.bulk_listings_to_display} on bulk price checks...'
     except:
         response = 'Tataru says:\n> Invalid input.'
+
     await ctx.send(response)
 
 @bot.command(name="doujin_no")
@@ -91,7 +95,7 @@ async def doujin_no(ctx):
     id_exists = False
     tries = 0
     while not id_exists:
-        id = random.randrange(0, doujin_max)
+        id = random.randrange(0, bd.doujin_max)
         #print(f'Trying id: {id}...')
         url = f'https://nhentai.net/g/{id}'
         r = requests.get(url)
@@ -120,7 +124,7 @@ async def doujin(ctx):
     id_exists = False
     tries = 0
     while not id_exists:
-        id = random.randrange(0, doujin_max)
+        id = random.randrange(0, bd.doujin_max)
         #print(f'Trying id: {id}...')
         url = f'https://nhentai.net/g/{id}'
         r = requests.get(url)
@@ -134,4 +138,4 @@ async def doujin(ctx):
     response = f'Tataru recommends (after {tries} tries):\n{url}'
     await ctx.send(response)
 
-bot.run(TOKEN)
+bot.run(bd.TOKEN)

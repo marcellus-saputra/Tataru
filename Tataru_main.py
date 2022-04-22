@@ -13,8 +13,6 @@ GUILD = os.getenv('DISCORD_GUILD')
 
 doujin_max = 1000000
 
-pities = {}
-
 bot = commands.Bot(command_prefix="%")
 
 bj_model = bj_mw.Blackjack_mw()

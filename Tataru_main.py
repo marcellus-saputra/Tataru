@@ -21,6 +21,8 @@ trade = poe_trade.Poe_trade()
 
 bj_model = bj_mw.Blackjack_mw()
 
+bulk_listings_to_display = 5
+
 @bot.event
 async def on_ready():
     guild = discord.utils.get(bot.guilds, name=GUILD)
@@ -52,13 +54,23 @@ async def roll(ctx, *args):
 
 @bot.command(name="bc")
 async def bulk_check(ctx, item):
-    listings = trade.price_check_bulk(item, 5)
+    listings = trade.price_check_bulk(item, bulk_listings_to_display)
     response = 'Tataru says:\n'
     response += '```'
     for listing in listings:
         response += f'Price: {listing[0]} \t exalt \t Stock: {listing[1]}\n'
     response = response[:-1]
     response += '```'
+    await ctx.send(response)
+
+@bot.command(name="set_bulk_listings_to_display")
+async def set_bulk_listings_to_display(ctx, i):
+    try:
+        int(i)
+        if i <= 0:
+            response = 'Tataru says:\n> Cannot set to a number <= 0.'
+    except:
+        response = 'Tataru says:\n> Invalid input.'
     await ctx.send(response)
 
 @bot.command(name="doujin_no")

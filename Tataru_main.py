@@ -69,6 +69,9 @@ async def set_bulk_listings_to_display(ctx, i):
         int(i)
         if i <= 0:
             response = 'Tataru says:\n> Cannot set to a number <= 0.'
+        else:
+            bulk_listings_to_display = i
+            response = f'Tataru says:\n> Now displaying {bulk_listings_to_display} on bulk price checks...'
     except:
         response = 'Tataru says:\n> Invalid input.'
     await ctx.send(response)

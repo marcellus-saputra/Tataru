@@ -4,7 +4,7 @@ dealer_threshold = 16
 # Simulate the outcome of this policy
 import random
 
-class Blackjack_mw:
+class Blackjack:
     # Dealer's policy is fixed: while total is below 16, keep hitting
     DEALER_THRESHOLD = 16
     BUST = 22

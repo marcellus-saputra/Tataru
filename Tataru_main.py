@@ -5,7 +5,7 @@ from discord.ext import commands
 import random
 import requests
 import asyncio
-from lib import bj_mw
+from lib import ff_blackjack
 from lib import poe_trade
 
 class BotData:
@@ -20,7 +20,7 @@ class BotData:
         self.trade = poe_trade.PoeTrade()
         self.bulk_listings_to_display = 5
 
-        self.bj_model = bj_mw.Blackjack_mw()
+        self.bj_model = ff_blackjack.Blackjack()
 
 
 bd = BotData()

@@ -18,7 +18,7 @@ class Poe_trade:
         self.fetch_url = 'https://www.pathofexile.com/api/trade/fetch/'
 
 
-    def price_check_bulk(self, item, listings_to_print):
+    def price_check_bulk_ex(self, item, listings_to_print):
         """
         Checks how many of an item you need to bulk sell them for one exalt by returning a list of several listings in the bulk exchange
         :param item: item to price check (must be a valid exchange tag) https://www.pathofexile.com/trade/about
@@ -62,4 +62,8 @@ class Poe_trade:
             stock = int(listing['item']['properties'][0]['values'][0][0].split('/')[0])
             listings_list.append((price, stock))
 
+        return listings_list
+
+    def price_check_bulk_chaos(self, item, min_stock, listings_to_print):
+        listings_list = []
         return listings_list

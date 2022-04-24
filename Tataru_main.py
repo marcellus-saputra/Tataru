@@ -56,11 +56,19 @@ async def bj_chance(ctx, player_hand, player_has_ace, dealer_hand):
 
 @bot.command(name="roll")
 async def roll(ctx, *args):
+    """
+    Returns one of the arguments randomly.
+    For multi-word choices, use "" around them.
+    """
     response = f'Tataru says:\n> {random.choice(args)}'
     await ctx.send(response)
 
 @bot.command(name="bce")
 async def bulk_check_ex(ctx, item):
+    """
+    Queries the official bulk exchange API for the item you input.
+    Returns the first (configurable) number of listings with their bulk exchange rate in exalts.
+    """
     listings = bd.trade.price_check_bulk_ex(item, bd.bulk_listings_to_display)
     response = 'Tataru says:\n'
     response += '```'
@@ -72,10 +80,19 @@ async def bulk_check_ex(ctx, item):
 
 @bot.command(name="bcc")
 async def bulk_check_chaos(ctx, item, min_stock):
+    """
+    Queries the official bulk exchange API for the item you input along with a minimum stock.
+    Returns the first (configurable) number of listings with their price in chaos and the bulk exchange rate attached in the note.
+    """
     try:
         min_stock = int(min_stock)
     except ValueError:
-        response = 'Tataru says:\n> Please input a minimum stock.'
+        response = 'Tataru says:\n> Please input an (integer) minimum stock.'
+        await ctx.send(response)
+        return
+
+    if min_stock <= 0:
+        response = 'Tataru says:\n> Minimum stock must be 1 or higher.'
         await ctx.send(response)
         return
 
@@ -90,6 +107,10 @@ async def bulk_check_chaos(ctx, item, min_stock):
 
 @bot.command(name="set_bulk_listings_to_display")
 async def set_bulk_listings_to_display(ctx, i):
+    """
+    Sets the number of listings returned by PoE Trade commands.
+    Default is 5.
+    """
     try:
         i = int(i)
         if i <= 0:

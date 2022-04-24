@@ -71,8 +71,15 @@ async def bulk_check_ex(ctx, item):
     await ctx.send(response)
 
 @bot.command(name="bcc")
-async def bulk_check_chaos(ctx, item):
-    listings = bd.trade.price_check_bulk_ex(item, bd.bulk_listings_to_display)
+async def bulk_check_chaos(ctx, item, min_stock):
+    try:
+        min_stock = int(min_stock)
+    except ValueError:
+        response = 'Tataru says:\n> Please input a minimum stock.'
+        await ctx.send(response)
+        return
+
+    listings = bd.trade.price_check_bulk_chaos(item, min_stock, bd.bulk_listings_to_display)
     response = 'Tataru says:\n'
     response += '```'
     for listing in listings:
@@ -80,13 +87,6 @@ async def bulk_check_chaos(ctx, item):
     response = response[:-1]
     response += '```'
     await ctx.send(response)
-
-@bot.command(name="bcc")
-async def bulk_check_chaos(ctx, item, min_stock):
-    try:
-        min_stock = int(min_stock)
-    except ValueError:
-        response = 'Tataru says:\n> Please input a minimum stock.'
 
 @bot.command(name="set_bulk_listings_to_display")
 async def set_bulk_listings_to_display(ctx, i):

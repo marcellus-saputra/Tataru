@@ -83,7 +83,7 @@ async def bulk_check_chaos(ctx, item, min_stock):
     response = 'Tataru says:\n'
     response += '```'
     for listing in listings:
-        response += f'Price: {listing[1]} \t chaos \t Note: {listing[0]}\n'
+        response += f'Price: {listing[1]:.1f} \t chaos \t Note: {listing[0]}\n'
     response = response[:-1]
     response += '```'
     await ctx.send(response)

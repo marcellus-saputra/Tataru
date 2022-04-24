@@ -35,6 +35,10 @@ async def on_ready():
 
 @bot.command(name="bj_chance")
 async def bj_chance(ctx, player_hand, player_has_ace, dealer_hand):
+    """
+    Given the value of your hand, whether you have received an ace, and the value of the dealer's current hand,
+    calculates the probability of you winning if you choose to HIT and if you choose to STAY.
+    """
     try:
         player_hand = int(player_hand)
         player_has_ace = player_has_ace.lower() == 't'

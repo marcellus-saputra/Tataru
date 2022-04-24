@@ -38,12 +38,13 @@ async def bj_chance(ctx, player_hand, player_has_ace, dealer_hand):
     """
     Given the value of your hand, whether you have received an ace, and the value of the dealer's current hand,
     calculates the probability of you winning if you choose to HIT and if you choose to STAY.
+    If the dealer has an ace, use 1 as the value of the dealer's hand.
     """
     try:
         player_hand = int(player_hand)
         player_has_ace = player_has_ace.lower() == 't'
         dealer_hand = int(dealer_hand)
-        dealer_has_ace = dealer_hand == 11
+        dealer_has_ace = dealer_hand == 1
     except:
         response = f'Tataru says:\n> Invalid input. Please input your game state as follows: ' \
                    f'"<your hand> <T or t if you have an ace, anything else otherwise> <dealer hand>.'

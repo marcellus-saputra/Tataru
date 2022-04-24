@@ -92,7 +92,7 @@ class PoeTrade:
         for listing in query_result:
             print(listing)
             # Get price
-            price = listing['price']['amount']
+            price = listing['listing']['price']['amount']
             # Get note, which contains bulk price
             note = listing['item']['note'].split(' ')[1]
             listings_list.append((note, price))

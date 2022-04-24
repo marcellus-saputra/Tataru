@@ -46,7 +46,7 @@ async def bj_chance(ctx, player_hand, player_has_ace, dealer_hand):
         player_has_ace = player_has_ace.lower() == 't'
         dealer_hand = int(dealer_hand)
         dealer_has_ace = dealer_hand == 1
-    except:
+    except ValueError:
         response = f'Tataru says:\n> Invalid input. Please input your game state as follows: ' \
                    f'"<your hand> <T or t if you have an ace, anything else otherwise> <dealer hand>.'
         await ctx.send(response)

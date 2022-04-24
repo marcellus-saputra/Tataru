@@ -90,7 +90,6 @@ class PoeTrade:
         listings_list = []
 
         for listing in query_result:
-            print(listing)
             # Get price
             price = float(listing['listing']['price']['amount'])
             # Get note, which contains bulk price

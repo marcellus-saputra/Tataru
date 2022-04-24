@@ -3,7 +3,9 @@ import json
 import os
 from dotenv import load_dotenv
 
-class Poe_trade:
+
+class PoeTrade:
+
     def __init__(self):
         load_dotenv()
         self.cookie = 'POESEDDID=' + os.getenv('POESESSID')
@@ -72,5 +74,6 @@ class Poe_trade:
         listings_list = []
         return listings_list
 
-trade = Poe_trade()
+
+trade = PoeTrade()
 print(trade.price_check_bulk_ex('stacked-deck', 5))

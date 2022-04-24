@@ -17,7 +17,7 @@ class BotData:
         self.doujin_max = 1000000
 
         print("Initializing PoE Trade integration...")
-        self.trade = poe_trade.Poe_trade()
+        self.trade = poe_trade.PoeTrade()
         self.bulk_listings_to_display = 5
 
         self.bj_model = bj_mw.Blackjack_mw()

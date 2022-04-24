@@ -17,6 +17,17 @@ class Poe_trade:
 
         self.fetch_url = 'https://www.pathofexile.com/api/trade/fetch/'
 
+        self.bulk_query = {
+            'exchange': {
+                'status': {
+                    'option': 'onlineleague'
+                },
+                'have': [],
+                'want': [],
+                'minimum': 1,
+                'fulfillable': True
+            }
+        }
 
     def price_check_bulk_ex(self, item, listings_to_print):
         """
@@ -25,19 +36,10 @@ class Poe_trade:
         :param listings_to_print: How many listings that will be returned
         :return: list of tuples (x, y) where x is the bulk price in exalts and y is amount of item the seller has in stock
         """
-        bulk_dict = {
-            'exchange': {
-                'status': {
-                    'option': 'onlineleague'
-                },
-                'have': ['exalted'],
-                'want': [item],
-                'minimum': 1,
-                'fulfillable': True
-            }
-        }
-
-        bulk_data = json.dumps(bulk_dict)
+        bulk_data = self.bulk_query.copy()
+        bulk_data['exchange']['have'].append('exalted')
+        bulk_data['exchange']['want'].append(item)
+        bulk_data = json.dumps(bulk_data)
 
         r = requests.post(self.bulk_exchange_url,
                           headers=self.headers,
@@ -67,3 +69,6 @@ class Poe_trade:
     def price_check_bulk_chaos(self, item, min_stock, listings_to_print):
         listings_list = []
         return listings_list
+
+#trade = Poe_trade()
+#print(trade.price_check_bulk_ex('stacked-deck', 5))

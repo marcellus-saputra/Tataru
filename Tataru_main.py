@@ -38,6 +38,7 @@ async def bj_chance(ctx, player_hand, player_has_ace, dealer_hand):
     """
     Given the value of your hand, whether you have received an ace, and the value of the dealer's current hand,
     calculates the probability of you winning if you choose to HIT and if you choose to STAY.
+    If you have an ace, use 't' or 'T'. Otherwise, inputting anything else will be considered a False.
     If the dealer has an ace, use 1 as the value of the dealer's hand.
     """
     try:

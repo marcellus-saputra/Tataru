@@ -71,6 +71,17 @@ async def bulk_check_ex(ctx, item):
     await ctx.send(response)
 
 @bot.command(name="bcc")
+async def bulk_check_chaos(ctx, item):
+    listings = bd.trade.price_check_bulk_ex(item, bd.bulk_listings_to_display)
+    response = 'Tataru says:\n'
+    response += '```'
+    for listing in listings:
+        response += f'Price: {listing[1]} \t chaos \t Note: {listing[0]}\n'
+    response = response[:-1]
+    response += '```'
+    await ctx.send(response)
+
+@bot.command(name="bcc")
 async def bulk_check_chaos(ctx, item, min_stock):
     try:
         min_stock = int(min_stock)

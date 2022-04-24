@@ -29,6 +29,21 @@ class Poe_trade:
             }
         }
 
+    def query(self, query_data, listings_to_get):
+        data = json.dumps(query_data)
+        r = requests.post(self.bulk_exchange_url, headers=self.headers, data=data)
+        response_json = r.json()
+
+        bulk_listings = response_json['result'][:listings_to_get]
+        query_id = response_json['id']
+        fetch_data = {'query': query_id, 'exchange': True}
+
+        r = requests.get(self.fetch_url + ','.join(bulk_listings),
+                         headers=self.headers,
+                         data=fetch_data)
+
+        return r.json()['result']
+
     def price_check_bulk_ex(self, item, listings_to_print):
         """
         Checks how many of an item you need to bulk sell them for one exalt by returning a list of several listings in the bulk exchange
@@ -39,25 +54,12 @@ class Poe_trade:
         bulk_data = self.bulk_query.copy()
         bulk_data['exchange']['have'].append('exalted')
         bulk_data['exchange']['want'].append(item)
-        bulk_data = json.dumps(bulk_data)
 
-        r = requests.post(self.bulk_exchange_url,
-                          headers=self.headers,
-                          data=bulk_data)
-
-        response_json = r.json()
-
-        bulk_listings = response_json['result'][:listings_to_print]
-        query_id = response_json['id']
-        fetch_data = {'query': query_id, 'exchange': True}
-
-        r = requests.get(self.fetch_url + ','.join(bulk_listings),
-                         headers=self.headers,
-                         data=fetch_data)
+        query_result = self.query(bulk_data, listings_to_print)
 
         listings_list = []
 
-        for listing in r.json()['result']:
+        for listing in query_result:
             # Get note, which contains bulk exalt price
             price = listing['item']['note'].split(' ')[1]
             # Get stock
@@ -70,5 +72,5 @@ class Poe_trade:
         listings_list = []
         return listings_list
 
-#trade = Poe_trade()
-#print(trade.price_check_bulk_ex('stacked-deck', 5))
+trade = Poe_trade()
+print(trade.price_check_bulk_ex('stacked-deck', 5))

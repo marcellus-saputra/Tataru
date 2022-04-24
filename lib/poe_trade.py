@@ -51,8 +51,9 @@ class PoeTrade:
         Checks how many of an item you need to bulk sell them for one exalt by returning a list of several listings in the bulk exchange
         :param item: item to price check (must be a valid exchange tag) https://www.pathofexile.com/trade/about
         :param listings_to_print: How many listings that will be returned
-        :return: list of tuples (x, y) where x is the bulk price in exalts and y is amount of item the seller has in stock
+        :return: list of tuples of strings (x, y) where x is the bulk price in exalts and y is amount of item the seller has in stock
         """
+
         bulk_data = self.bulk_query.copy()
         bulk_data['exchange']['have'].append('exalted')
         bulk_data['exchange']['want'].append(item)
@@ -71,9 +72,33 @@ class PoeTrade:
         return listings_list
 
     def price_check_bulk_chaos(self, item, min_stock, listings_to_print):
+        """
+        Queries the bulk exchange API for the item you want in chaos orbs.
+        :param item: item to price check (must be a valid exchange tag) https://www.pathofexile.com/trade/about
+        :param min_stock: minimum stock to filter for
+        :param listings_to_print: how many listings that will be returned
+        :return: list of tuples of strings (x, y) where x is the bulk price and y is the individual price
+        """
+
+        bulk_data = self.bulk_query.copy()
+        bulk_data['exchange']['have'].append('chaos')
+        bulk_data['exchange']['want'].append(item)
+        bulk_data['exchange']['minimum'] = min_stock
+
+        query_result = self.query(bulk_data, listings_to_print)
+
         listings_list = []
+
+        for listing in query_result:
+            print(listing)
+            # Get price
+            price = listing['price']['amount']
+            # Get note, which contains bulk price
+            note = listing['item']['note'].split(' ')[1]
+            listings_list.append((note, price))
+
         return listings_list
 
 
-trade = PoeTrade()
-print(trade.price_check_bulk_ex('stacked-deck', 5))
+#trade = PoeTrade()
+#print(trade.price_check_bulk_chaos('stacked-deck', 100, 5))

@@ -7,6 +7,7 @@ import requests
 import asyncio
 from lib import ff_blackjack
 from lib import poe_trade
+from lib import warframe
 
 class BotData:
     def __init__(self):
@@ -25,6 +26,7 @@ class BotData:
 
 bd = BotData()
 bot = commands.Bot(command_prefix="%")
+bot.add_cog(warframe.WarframeCog(bot))
 
 @bot.event
 async def on_ready():

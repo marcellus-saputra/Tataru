@@ -3,8 +3,6 @@ import discord
 from dotenv import load_dotenv
 from discord.ext import commands
 import random
-import requests
-import asyncio
 from lib import ff_blackjack
 from lib import poe_trade
 from lib import warframe

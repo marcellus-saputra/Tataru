@@ -2,6 +2,7 @@ import requests
 from discord.ext import commands
 import discord
 import random
+import asyncio
 
 
 class NsfwCog(commands.Cog, name="NSFW"):

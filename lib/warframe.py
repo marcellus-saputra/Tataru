@@ -5,7 +5,8 @@ from discord.ext import commands
 
 class WarframeCog(commands.Cog, name="Warframe Cog"):
     def __init__(self, bot):
-        self.bot = bot
+        if bot:
+            self.bot = bot
         self._last_member = None
 
         self.wfstatus_url = 'https://api.warframestat.us/pc'
@@ -32,5 +33,16 @@ class WarframeCog(commands.Cog, name="Warframe Cog"):
             #print(invasion['defendingFaction'])
         return invasion_list
 
-#cog = WarframeCog()
-#cog.get_invasion_data()
+    @commands.command()
+    async def cetus(self, ctx):
+        '''
+        Checks current day/night cycle in Cetus.
+        '''
+        r = requests.get(self.wfstatus_url + '/cetusCycle')
+        #print(json.dumps(r.json(), indent=4))
+        r = r.json()
+        response = f'Tataru says:\n> {"Daytime" if r["isDay"] else "Nighttime"}, {r["timeLeft"]} left.'
+        await ctx.send(response)
+
+#cog = WarframeCog(None)
+#cog.cetus()

@@ -8,6 +8,7 @@ import asyncio
 from lib import ff_blackjack
 from lib import poe_trade
 from lib import warframe
+from lib import nsfw
 
 class BotData:
     def __init__(self):
@@ -27,6 +28,7 @@ class BotData:
 bd = BotData()
 bot = commands.Bot(command_prefix="%")
 bot.add_cog(warframe.WarframeCog(bot))
+bot.add_cog(nsfw.NsfwCog(bot))
 
 @bot.event
 async def on_ready():
@@ -125,64 +127,6 @@ async def set_bulk_listings_to_display(ctx, i):
     except:
         response = 'Tataru says:\n> Invalid input.'
 
-    await ctx.send(response)
-
-@bot.command(name="doujin_no")
-async def doujin_no(ctx):
-    if type(ctx.channel) is not discord.DMChannel:
-        try:
-            if ctx.channel.name != "lewd" and ctx.channel.name != "nsfw":
-                response = 'Tataru recommends:\n> Doing this in an NSFW channel.'
-                await ctx.send(response)
-                return
-        except AttributeError:
-            response = 'Channel unclear. This command can only be used in DMs or in the lewd/nsfw channels'
-            await ctx.send(response)
-            return
-    id_exists = False
-    tries = 0
-    while not id_exists:
-        id = random.randrange(0, bd.doujin_max)
-        #print(f'Trying id: {id}...')
-        url = f'https://nhentai.net/g/{id}'
-        r = requests.get(url)
-        try:
-            r.raise_for_status()
-        except requests.HTTPError:
-            tries += 1
-            await asyncio.sleep(0.5)
-            continue
-        id_exists = True
-    response = f'Tataru recommends (after {tries} tries):\n> {id}'
-    await ctx.send(response)
-
-@bot.command(name="doujin")
-async def doujin(ctx):
-    if type(ctx.channel) is not discord.DMChannel:
-        try:
-            if ctx.channel.name != "lewd" and ctx.channel.name != "nsfw":
-                response = 'Tataru recommends:\n> Doing this in an NSFW channel.'
-                await ctx.send(response)
-                return
-        except AttributeError:
-            response = 'Channel unclear. This command can only be used in DMs or in the lewd/nsfw channels'
-            await ctx.send(response)
-            return
-    id_exists = False
-    tries = 0
-    while not id_exists:
-        id = random.randrange(0, bd.doujin_max)
-        #print(f'Trying id: {id}...')
-        url = f'https://nhentai.net/g/{id}'
-        r = requests.get(url)
-        try:
-            r.raise_for_status()
-        except requests.HTTPError:
-            tries += 1
-            await asyncio.sleep(0.5)
-            continue
-        id_exists = True
-    response = f'Tataru recommends (after {tries} tries):\n{url}'
     await ctx.send(response)
 
 bot.run(bd.TOKEN)

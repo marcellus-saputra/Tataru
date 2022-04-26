@@ -3,7 +3,7 @@ import json
 from discord.ext import commands
 
 
-class WarframeCog(commands.Cog, name="Warframe Cog"):
+class WarframeCog(commands.Cog, name="Warframe"):
     def __init__(self, bot):
         if bot:
             self.bot = bot

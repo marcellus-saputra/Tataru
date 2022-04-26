@@ -14,8 +14,6 @@ class BotData:
         self.TOKEN = os.getenv('DISCORD_TOKEN')
         self.GUILD = os.getenv('DISCORD_GUILD')
 
-        self.doujin_max = 1000000
-
         print("Initializing PoE Trade integration...")
         self.trade = poe_trade.PoeTrade()
         self.bulk_listings_to_display = 5

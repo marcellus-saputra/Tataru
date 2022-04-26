@@ -13,6 +13,9 @@ class WarframeCog(commands.Cog, name="Warframe Cog"):
 
     @commands.command()
     async def invasion(self, ctx):
+        '''
+        Checks current ongoing invasions and their rewards.
+        '''
         invasions = self.get_invasion_data()
         response = 'Tataru says:\n```'
         for invasion in invasions:

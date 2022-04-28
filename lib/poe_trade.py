@@ -9,13 +9,14 @@ class PoeTrade:
     def __init__(self):
         load_dotenv()
         self.cookie = 'POESEDDID=' + os.getenv('POESESSID')
+        self.league = os.getenv('POE_LEAGUE')
 
         self.headers = {'Content-Type': 'application/json',
                    'Accept': 'application/json',
                    'User-Agent': 'marcellusgaming@gmail.com',
                    'Cookie': self.cookie}
 
-        self.bulk_exchange_url = 'https://www.pathofexile.com/api/trade/exchange/Archnemesis'
+        self.bulk_exchange_url = f'https://www.pathofexile.com/api/trade/exchange/{self.league}'
 
         self.fetch_url = 'https://www.pathofexile.com/api/trade/fetch/'
 
@@ -29,6 +30,13 @@ class PoeTrade:
                 'minimum': 1,
                 'fulfillable': True
             }
+        }
+
+        self.ninja_url = 'https://poe.ninja/api/data/currencyoverview'
+
+        self.ninja_data = {
+            'league': self.league,
+            'type': None
         }
 
     def query(self, query_data, listings_to_get):
@@ -98,6 +106,31 @@ class PoeTrade:
 
         return listings_list
 
+    def ninja_get_exalt_price(self):
+        """
+        Queries poe.ninja's API to get the current exalt price, rounded and unrounded.
+        :return: Tuple (x, y) where x is the rounded and y the unrounded current exalt prices.
+        """
+        params = self.ninja_data.copy()
+        params['type'] = 'Currency'
+        result = requests.get(self.ninja_url, params=params)
+
+        for item in result.json()['lines']:
+            if item['currencyTypeName'] == 'Exalted Orb':
+                ex_price = float(item['chaosEquivalent'])
+                return round(ex_price), ex_price
+
+    def exalt_to_chaos(self, exalts):
+        """
+        Converts given number of exalts into its chaos-equivalent price.
+        Retrieves current exalt price from poe.ninja.
+        :param exalts: Number of exalts to convert (can use decimals).
+        :return: Chaos-equivalent price.
+        """
+        ex_price = self.ninja_get_exalt_price()[0]
+        print(ex_price)
+        return round(ex_price * exalts)
 
 #trade = PoeTrade()
 #print(trade.price_check_bulk_chaos('stacked-deck', 100, 5))
+#print(trade.exalt_to_chaos(3))

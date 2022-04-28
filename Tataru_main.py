@@ -137,4 +137,24 @@ async def get_exalt_price(ctx):
                '```'
     await ctx.send(response)
 
+@bot.command(name="extoc")
+async def ex_to_c(ctx, exalts):
+    """
+    Converts given number of exalts to chaos.
+    """
+    try:
+        exalts = exalts.replace(',', '.')
+        exalts = float(exalts)
+    except ValueError:
+        response = 'Tataru says:\n> Please input a number.'
+        await ctx.send(response)
+        return
+
+    chaos, ex_price = bd.trade.exalt_to_chaos(float(exalts))
+    response = 'Tataru says:\n' \
+               '```' \
+               f'Price in Chaos: {chaos} (current price: {ex_price})' \
+               '```'
+    await ctx.send(response)
+
 bot.run(bd.TOKEN)

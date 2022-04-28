@@ -126,7 +126,7 @@ async def set_bulk_listings_to_display(ctx, i):
     await ctx.send(response)
 
 @bot.command(name="ex")
-async def get_exalt_price(ctx, i):
+async def get_exalt_price(ctx):
     """
     Retrieves current exalt price from poe.ninja.
     """

@@ -39,6 +39,22 @@ class PoeTrade:
             'type': None
         }
 
+        self.breachstones = (
+            'Chayula',
+            'Uul-Netol',
+            'Tul',
+            'Esh',
+            'Xoph',
+        )
+
+        self.breachstone_levels = (
+            'Flawless',
+            'Pure',
+            'Enriched',
+            'Charged',
+            'Vanilla'
+        )
+
     def __query(self, query_data, listings_to_get):
         data = json.dumps(query_data)
         r = requests.post(self.bulk_exchange_url, headers=self.headers, data=data)
@@ -141,7 +157,21 @@ class PoeTrade:
 
         return result.json()['lines']
 
-trade = PoeTrade()
+    def get_breachstones(self):
+        """
+        Checks the price of all breachstones.
+        :return: dict of dicts containing the price of all breachstones, organized into lords and tiers.
+        """
+        breach_dict = {breachlord: {tier: 0 for tier in self.breachstone_levels}
+                           for breachlord in self.breachstones}
+        fragments = self.ninja_get_fragments()
+        for item in fragments:
+            item_name = item['currencyTypeName'].split(' ')
+            if item_name[-1] == 'Breachstone':
+                breach_dict[item_name[0][:-2]][item_name[1] if item_name[1] is not 'Breachstone' else 'Vanilla'] = item['chaosEquivalent']
+        return breach_dict
+
+#trade = PoeTrade()
 #print(trade.price_check_bulk_chaos('stacked-deck', 100, 5))
 #print(trade.exalt_to_chaos(3))
-print(trade.ninja_get_fragments())
+#trade.get_breachstones()

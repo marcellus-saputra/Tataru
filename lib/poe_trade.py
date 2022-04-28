@@ -128,8 +128,7 @@ class PoeTrade:
         :return: Chaos-equivalent price.
         """
         ex_price = self.ninja_get_exalt_price()[0]
-        print(ex_price)
-        return round(ex_price * exalts)
+        return round(ex_price * exalts), ex_price
 
 #trade = PoeTrade()
 #print(trade.price_check_bulk_chaos('stacked-deck', 100, 5))

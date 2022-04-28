@@ -157,4 +157,23 @@ async def ex_to_c(ctx, exalts):
                '```'
     await ctx.send(response)
 
+@bot.command(name="breachstone")
+async def breachstone(ctx):
+    """
+    Lists the prices of all breachstones, organized by boss and tier.
+    """
+    prices = bd.trade.get_breachstones()
+    response = 'Tataru says:\n' \
+               '```'
+    for boss in prices.keys():
+        for tier in prices[boss].keys():
+            indent_offset = 8
+            # longest combo = Uul-Netol Flawless (17)
+            indent_offset += 17 - (len(boss) + (len(tier) if tier != 'Vanilla' else -1)) # this just works
+            indent = indent_offset * ' '
+            response += f"{boss}'s{' ' + tier if tier != 'Vanilla' else ''} Breachstone:{indent}{prices[boss][tier]}\n"
+        response += '\n'
+    response += '```'
+    await ctx.send(response)
+
 bot.run(bd.TOKEN)

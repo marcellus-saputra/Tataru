@@ -125,4 +125,16 @@ async def set_bulk_listings_to_display(ctx, i):
 
     await ctx.send(response)
 
+@bot.command(name="ex")
+async def get_exalt_price(ctx, i):
+    """
+    Retrieves current exalt price from poe.ninja.
+    """
+    price_rounded, price_unrounded = bd.trade.ninja_get_exalt_price()
+    response = 'Tataru says:\n' \
+               '```' \
+               f'Current Exalt price: {price_rounded} (rounded from {price_unrounded})' \
+               '```'
+    await ctx.send(response)
+
 bot.run(bd.TOKEN)

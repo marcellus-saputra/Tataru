@@ -39,7 +39,7 @@ class PoeTrade:
             'type': None
         }
 
-    def query(self, query_data, listings_to_get):
+    def __query(self, query_data, listings_to_get):
         data = json.dumps(query_data)
         r = requests.post(self.bulk_exchange_url, headers=self.headers, data=data)
         response_json = r.json()
@@ -66,7 +66,7 @@ class PoeTrade:
         bulk_data['exchange']['have'].append('exalted')
         bulk_data['exchange']['want'].append(item)
 
-        query_result = self.query(bulk_data, listings_to_print)
+        query_result = self.__query(bulk_data, listings_to_print)
 
         listings_list = []
 
@@ -93,7 +93,7 @@ class PoeTrade:
         bulk_data['exchange']['want'].append(item)
         bulk_data['exchange']['minimum'] = min_stock
 
-        query_result = self.query(bulk_data, listings_to_print)
+        query_result = self.__query(bulk_data, listings_to_print)
 
         listings_list = []
 
@@ -130,6 +130,18 @@ class PoeTrade:
         ex_price = self.ninja_get_exalt_price()[0]
         return round(ex_price * exalts), ex_price
 
-#trade = PoeTrade()
+    def ninja_get_fragments(self):
+        """
+        Queries poe.ninja's API to get the current price of all fragments.
+        :return: dict representing the JSON query result.
+        """
+        params = self.ninja_data.copy()
+        params['type'] = 'Fragment'
+        result = requests.get(self.ninja_url, params=params)
+
+        return result.json()['lines']
+
+trade = PoeTrade()
 #print(trade.price_check_bulk_chaos('stacked-deck', 100, 5))
 #print(trade.exalt_to_chaos(3))
+print(trade.ninja_get_fragments())

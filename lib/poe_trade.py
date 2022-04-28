@@ -168,10 +168,10 @@ class PoeTrade:
         for item in fragments:
             item_name = item['currencyTypeName'].split(' ')
             if item_name[-1] == 'Breachstone':
-                breach_dict[item_name[0][:-2]][item_name[1] if item_name[1] is not 'Breachstone' else 'Vanilla'] = item['chaosEquivalent']
+                breach_dict[item_name[0][:-2]][item_name[1] if item_name[1] != 'Breachstone' else 'Vanilla'] = item['chaosEquivalent']
         return breach_dict
 
 #trade = PoeTrade()
 #print(trade.price_check_bulk_chaos('stacked-deck', 100, 5))
 #print(trade.exalt_to_chaos(3))
-#trade.get_breachstones()
+#print(trade.get_breachstones())

@@ -81,7 +81,7 @@ async def bulk_check_ex(ctx, item):
     await ctx.send(response)
 
 @bot.command(name="bcc")
-async def bulk_check_chaos(ctx, item, min_stock):
+async def bulk_check_chaos(ctx, item, min_stock=0):
     """
     Queries the official bulk exchange API for the item you input along with a minimum stock.
     Returns the first (configurable) number of listings with their price in chaos and the bulk exchange rate attached in the note.
@@ -94,7 +94,7 @@ async def bulk_check_chaos(ctx, item, min_stock):
         return
 
     if min_stock <= 0:
-        response = 'Tataru says:\n> Minimum stock must be 1 or higher.'
+        response = 'Tataru says:\n> Please input a minimum stock that is higher than 0.'
         await ctx.send(response)
         return
 

@@ -177,4 +177,13 @@ async def breachstone(ctx):
     response += '```'
     await ctx.send(response)
 
+@bot.command(name="uberlab")
+async def uberlab(ctx):
+    """
+    Get today's Uberlab layout from poelab.
+    """
+    img_link = bd.trade.get_uberlab()
+    response = f'Tataru says:\n{img_link}'
+    await ctx.send(response)
+
 bot.run(bd.TOKEN)

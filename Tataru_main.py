@@ -15,7 +15,7 @@ class BotData:
         self.GUILD = os.getenv('DISCORD_GUILD')
 
         print("Initializing PoE Trade integration...")
-        self.trade = poe.PoeTrade()
+        self.trade = poe.PoeCog()
         self.bulk_listings_to_display = 5
 
         self.bj_model = ff_blackjack.Blackjack()

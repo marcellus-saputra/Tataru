@@ -55,6 +55,7 @@ class PoeCog:
             'Charged',
             'Vanilla'
         )
+        self.uberlab_url = 'https://www.poelab.com/ikid3/'
 
     def __query(self, query_data, listings_to_get):
         data = json.dumps(query_data)
@@ -171,3 +172,16 @@ class PoeCog:
             if item_name[-1] == 'Breachstone':
                 breach_dict[item_name[0][:-2]][item_name[1] if item_name[1] != 'Breachstone' else 'Vanilla'] = item['chaosEquivalent']
         return breach_dict
+
+    def get_uberlab(self):
+        """
+        Gets current Uberlab layout from poelab.
+        :return: Link to image showing current Uberlab layout.
+        """
+        # Setting a custom user agent apparently makes it work?
+        poelab_headers = {
+            'User-Agent': 'marcellusgaming@gmail.com'
+        }
+        result = requests.get(self.uberlab_url, headers=poelab_headers)
+        parsed = soup(result.content, 'html.parser')
+        return parsed.find(id='notesImg')['src']

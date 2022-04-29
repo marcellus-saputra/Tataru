@@ -2,6 +2,7 @@ import requests
 import json
 import os
 from dotenv import load_dotenv
+from bs4 import BeautifulSoup as soup
 
 
 class PoeCog:
@@ -170,8 +171,3 @@ class PoeCog:
             if item_name[-1] == 'Breachstone':
                 breach_dict[item_name[0][:-2]][item_name[1] if item_name[1] != 'Breachstone' else 'Vanilla'] = item['chaosEquivalent']
         return breach_dict
-
-#trade = PoeTrade()
-#print(trade.price_check_bulk_chaos('stacked-deck', 100, 5))
-#print(trade.exalt_to_chaos(3))
-#print(trade.get_breachstones())

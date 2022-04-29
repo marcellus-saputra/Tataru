@@ -15,7 +15,7 @@ class BotData:
         self.GUILD = os.getenv('DISCORD_GUILD')
 
         print("Initializing PoE Trade integration...")
-        self.trade = poe.PoeCog()
+        self.poe_cog = poe.PoeCog()
         self.bulk_listings_to_display = 5
 
         self.bj_model = ff_blackjack.Blackjack()
@@ -71,7 +71,7 @@ async def bulk_check_ex(ctx, item):
     Queries the official bulk exchange API for the item you input.
     Returns the first (configurable) number of listings with their bulk exchange rate in exalts.
     """
-    listings = bd.trade.price_check_bulk_ex(item, bd.bulk_listings_to_display)
+    listings = bd.poe_cog.price_check_bulk_ex(item, bd.bulk_listings_to_display)
     response = 'Tataru says:\n'
     response += '```'
     for listing in listings:
@@ -98,7 +98,7 @@ async def bulk_check_chaos(ctx, item, min_stock):
         await ctx.send(response)
         return
 
-    listings = bd.trade.price_check_bulk_chaos(item, min_stock, bd.bulk_listings_to_display)
+    listings = bd.poe_cog.price_check_bulk_chaos(item, min_stock, bd.bulk_listings_to_display)
     response = 'Tataru says:\n'
     response += '```'
     for listing in listings:
@@ -130,7 +130,7 @@ async def get_exalt_price(ctx):
     """
     Retrieves current exalt price from poe.ninja.
     """
-    price_rounded, price_unrounded = bd.trade.ninja_get_exalt_price()
+    price_rounded, price_unrounded = bd.poe_cog.ninja_get_exalt_price()
     response = 'Tataru says:\n' \
                '```' \
                f'Current Exalt price: {price_rounded} (rounded from {price_unrounded})' \
@@ -150,7 +150,7 @@ async def ex_to_c(ctx, exalts):
         await ctx.send(response)
         return
 
-    chaos, ex_price = bd.trade.exalt_to_chaos(float(exalts))
+    chaos, ex_price = bd.poe_cog.exalt_to_chaos(float(exalts))
     response = 'Tataru says:\n' \
                '```' \
                f'Price in Chaos: {chaos} (current price: {ex_price})' \
@@ -162,7 +162,7 @@ async def breachstone(ctx):
     """
     Lists the prices of all breachstones, organized by boss and tier.
     """
-    prices = bd.trade.get_breachstones()
+    prices = bd.poe_cog.get_breachstones()
     response = 'Tataru says:\n' \
                '```'
     for boss in prices.keys():
@@ -182,7 +182,7 @@ async def uberlab(ctx):
     """
     Get today's Uberlab layout from poelab.
     """
-    img_link = bd.trade.get_uberlab()
+    img_link = bd.poe_cog.get_uberlab()
     response = f'Tataru says:\n{img_link}'
     await ctx.send(response)
 

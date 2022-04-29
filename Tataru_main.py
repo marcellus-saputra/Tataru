@@ -169,7 +169,8 @@ async def breachstone(ctx):
         for tier in prices[boss].keys():
             indent_offset = 8
             # longest combo = Uul-Netol Flawless (17)
-            indent_offset += 17 - (len(boss) + (len(tier) if tier != 'Vanilla' else -1)) # this just works
+            # non-vanilla tiers also add another space
+            indent_offset += 17 - (len(boss) + (len(tier) if tier != 'Vanilla' else -1))
             indent = indent_offset * ' '
             response += f"{boss}'s{' ' + tier if tier != 'Vanilla' else ''} Breachstone:{indent}{prices[boss][tier]}\n"
         response += '\n'

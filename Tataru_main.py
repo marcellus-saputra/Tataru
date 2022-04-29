@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from discord.ext import commands
 import random
 from lib import ff_blackjack
-from lib import poe_trade
+from lib import poe
 from lib import warframe
 from lib import nsfw
 
@@ -15,7 +15,7 @@ class BotData:
         self.GUILD = os.getenv('DISCORD_GUILD')
 
         print("Initializing PoE Trade integration...")
-        self.trade = poe_trade.PoeTrade()
+        self.trade = poe.PoeTrade()
         self.bulk_listings_to_display = 5
 
         self.bj_model = ff_blackjack.Blackjack()

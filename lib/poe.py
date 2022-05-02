@@ -178,17 +178,28 @@ class PoeCog:
                 breach_dict[item_name[0][:-2]][item_name[1] if item_name[1] != 'Breachstone' else 'Vanilla'] = item['chaosEquivalent']
         return breach_dict
 
-    def get_uberlab(self):
+    def get_lab(self, tier):
         """
-        Gets current Uberlab layout from poelab.
-        :return: Link to image showing current Uberlab layout.
+        Gets current Lab layout of the given tier.
+        :param tier: 0 to 3, 0 meaning Normal Lab, 3 being Uberlab. Check input before calling.
+        :return: Link to the image containing the Lab layout.
         """
+
+        def tier_string(tier):
+            return {
+                0: 'Normal',
+                1: 'Cruel',
+                2: 'Merciless',
+                3: 'Uber'
+            }[tier]
+        find_string = tier_string(tier) + ' Labyrinth Daily Notes'
+
         # Get link to Uberlab's page from the main page (Uberlab page changes every reset)
         poelab_main_page = requests.get(self.poelab_url, headers=self.poelab_headers)
         main_page_parsed = soup(poelab_main_page.content, 'html.parser')
-        uberlab_li = main_page_parsed.find(lambda tag: tag.string == 'Uber Labyrinth Daily Notes')
-        uberlab_url = uberlab_li.a['href']
+        lab_li = main_page_parsed.find(lambda tag: tag.string == find_string)
+        lab_url = lab_li.a['href']
 
-        uberlab_page = requests.get(uberlab_url, headers=self.poelab_headers)
-        uberlab_page_parsed = soup(uberlab_page.content, 'html.parser')
-        return uberlab_page_parsed.find(id='notesImg')['src']
+        lab_page = requests.get(lab_url, headers=self.poelab_headers)
+        lab_page_parsed = soup(lab_page.content, 'html.parser')
+        return lab_page_parsed.find(id='notesImg')['src']

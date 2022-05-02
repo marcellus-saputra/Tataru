@@ -55,7 +55,7 @@ class PoeCog:
             'Charged',
             'Vanilla'
         )
-        self.uberlab_url = 'https://www.poelab.com/ikid3/'
+        self.poelab_url = 'https://www.poelab.com/'
 
     def __query(self, query_data, listings_to_get):
         data = json.dumps(query_data)
@@ -182,6 +182,13 @@ class PoeCog:
         poelab_headers = {
             'User-Agent': 'marcellusgaming@gmail.com'
         }
-        result = requests.get(self.uberlab_url, headers=poelab_headers)
-        parsed = soup(result.content, 'html.parser')
-        return parsed.find(id='notesImg')['src']
+
+        # Get link to Uberlab's page from the main page (Uberlab page changes every reset)
+        poelab_main_page = requests.get(self.poelab_url, headers=poelab_headers)
+        main_page_parsed = soup(poelab_main_page.content, 'html.parser')
+        uberlab_li = main_page_parsed.find(lambda tag: tag.string == 'Uber Labyrinth Daily Notes')
+        uberlab_url = uberlab_li.a['href']
+
+        uberlab_page = requests.get(uberlab_url, headers=poelab_headers)
+        uberlab_page_parsed = soup(uberlab_page.content, 'html.parser')
+        return uberlab_page_parsed.find(id='notesImg')['src']

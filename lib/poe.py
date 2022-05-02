@@ -57,6 +57,11 @@ class PoeCog:
         )
         self.poelab_url = 'https://www.poelab.com/'
 
+        # Setting a custom user agent apparently spoofs CloudFlare?
+        self.poelab_headers = {
+            'User-Agent': 'marcellusgaming@gmail.com'
+        }
+
     def __query(self, query_data, listings_to_get):
         data = json.dumps(query_data)
         r = requests.post(self.bulk_exchange_url, headers=self.headers, data=data)
@@ -178,17 +183,12 @@ class PoeCog:
         Gets current Uberlab layout from poelab.
         :return: Link to image showing current Uberlab layout.
         """
-        # Setting a custom user agent apparently makes it work?
-        poelab_headers = {
-            'User-Agent': 'marcellusgaming@gmail.com'
-        }
-
         # Get link to Uberlab's page from the main page (Uberlab page changes every reset)
-        poelab_main_page = requests.get(self.poelab_url, headers=poelab_headers)
+        poelab_main_page = requests.get(self.poelab_url, headers=self.poelab_headers)
         main_page_parsed = soup(poelab_main_page.content, 'html.parser')
         uberlab_li = main_page_parsed.find(lambda tag: tag.string == 'Uber Labyrinth Daily Notes')
         uberlab_url = uberlab_li.a['href']
 
-        uberlab_page = requests.get(uberlab_url, headers=poelab_headers)
+        uberlab_page = requests.get(uberlab_url, headers=self.poelab_headers)
         uberlab_page_parsed = soup(uberlab_page.content, 'html.parser')
         return uberlab_page_parsed.find(id='notesImg')['src']

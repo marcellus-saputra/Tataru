@@ -182,8 +182,8 @@ async def uberlab(ctx):
     """
     Get today's Uberlab layout from poelab.
     """
-    img_link = bd.poe_cog.get_uberlab()
-    response = f'Tataru says:\n{img_link}'
+    img_link = bd.poe_cog.get_lab(3)
+    response = f'Tataru found:\n{img_link}'
     await ctx.send(response)
 
 bot.run(bd.TOKEN)

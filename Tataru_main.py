@@ -186,4 +186,31 @@ async def uberlab(ctx):
     response = f'Tataru found:\n{img_link}'
     await ctx.send(response)
 
+@bot.command(name="lab3")
+async def lab3(ctx):
+    """
+    Get today's Lab3 layout from poelab.
+    """
+    img_link = bd.poe_cog.get_lab(2)
+    response = f'Tataru found:\n{img_link}'
+    await ctx.send(response)
+
+@bot.command(name="lab2")
+async def lab3(ctx):
+    """
+    Get today's Lab2 layout from poelab.
+    """
+    img_link = bd.poe_cog.get_lab(1)
+    response = f'Tataru found:\n{img_link}'
+    await ctx.send(response)
+
+@bot.command(name="lab")
+async def lab3(ctx):
+    """
+    Get today's Normal Lab layout from poelab.
+    """
+    img_link = bd.poe_cog.get_lab(0)
+    response = f'Tataru found:\n{img_link}'
+    await ctx.send(response)
+
 bot.run(bd.TOKEN)

@@ -213,4 +213,12 @@ async def lab3(ctx):
     response = f'Tataru found:\n{img_link}'
     await ctx.send(response)
 
+@bot.commands(name="tags")
+async def tags(ctx):
+    """
+    Get link to trade website's "About" page that contains all API-searchable item tags.
+    """
+    response = 'Tataru says:\n> https://www.pathofexile.com/trade/about'
+    await ctx.send(response)
+
 bot.run(bd.TOKEN)

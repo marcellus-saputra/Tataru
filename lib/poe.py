@@ -34,6 +34,7 @@ class PoeCog:
         }
 
         self.ninja_url = 'https://poe.ninja/api/data/currencyoverview'
+        self.ninja_url_item = 'https://poe.ninja/api/data/itemoverview'
 
         self.ninja_data = {
             'league': self.league,
@@ -163,6 +164,23 @@ class PoeCog:
         result = requests.get(self.ninja_url, params=params)
 
         return result.json()['lines']
+
+    def ninja_get_gem(self, gem):
+        """
+        Searches poe.ninja's skill gem listings and returns the prices of all gems matching the name.
+        :param gem: Name of the gem
+        :return: dict containing the gem names and their prices
+        """
+        params = self.ninja_data.copy()
+        params['type'] = 'SkillGem'
+        result = requests.get(self.ninja_url_item, params=params)
+        gems = result.json()['lines']
+        answer = {}
+        for entry in gems:
+            if gem.lower() in entry['name'].lower():
+                answer[f'{entry["variant"]} {entry["name"]}'] = entry['chaosValue']
+        return answer
+
 
     def get_breachstones(self):
         """

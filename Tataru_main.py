@@ -234,14 +234,16 @@ async def get_gems(ctx, *args):
         await ctx.send(response)
         return
 
-    max_gem_name_length = max(len(gem.split()[1]) for gem in gem_prices.keys())
+    max_gem_name_length = max(len(' '.join(gem.split()[1:])) for gem in gem_prices.keys())
     max_variant_length = 5  #20/20
 
     response = 'Tataru says:\n' \
                '```'
     for gem in gem_prices.keys():
-        indentation = ' ' * (max_gem_name_length - len(gem))
-        response += f'\n{gem}{indentation}: {gem_prices[gem]}'
+        gem_name_split = gem.split()
+        variant_indentation = ' ' * (max_variant_length - len(gem_name_split[0]))
+        name_indentation = ' ' * (max_gem_name_length - len(' '.join(gem_name_split[1:])))
+        response += f'\n{gem_name_split[0]}{variant_indentation}\t{" ".join(gem_name_split[1:])}{name_indentation}:\t{gem_prices[gem]}'
     response += '```'
     await ctx.send(response)
     return

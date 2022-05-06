@@ -178,7 +178,7 @@ class PoeCog:
         answer = {}
         for entry in gems:
             if gem.lower() in entry['name'].lower():
-                if '21' in entry['variant'] or '23' in entry['variant']:
+                if '21' in entry['variant'] or '23' in entry['variant'] or 'c' in entry['variant']:
                     continue
                 answer[f'{entry["variant"]} {entry["name"]}'] = entry['chaosValue']
         return answer

@@ -213,12 +213,37 @@ async def lab3(ctx):
     response = f'Tataru found:\n{img_link}'
     await ctx.send(response)
 
-@bot.commands(name="tags")
+@bot.command(name="tags")
 async def tags(ctx):
     """
     Get link to trade website's "About" page that contains all API-searchable item tags.
     """
     response = 'Tataru says:\n> https://www.pathofexile.com/trade/about'
     await ctx.send(response)
+
+@bot.command(name="gem")
+async def get_gems(ctx, *args):
+    """
+    Search poe.ninja prices for skill gems matching the given name.
+    """
+    gem_name = ' '.join(args)
+    gem_prices = bd.poe_cog.ninja_get_gem(gem_name)
+
+    if len(gem_prices) == 0:
+        response = 'Tataru says:\n> No results found.'
+        await ctx.send(response)
+        return
+
+    max_gem_name_length = max(len(gem.split()[1]) for gem in gem_prices.keys())
+    max_variant_length = 5  #20/20
+
+    response = 'Tataru says:\n' \
+               '```'
+    for gem in gem_prices.keys():
+        indentation = ' ' * (max_gem_name_length - len(gem))
+        response += f'\n{gem}{indentation}: {gem_prices[gem]}'
+    response += '```'
+    await ctx.send(response)
+    return
 
 bot.run(bd.TOKEN)

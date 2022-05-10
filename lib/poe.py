@@ -165,20 +165,29 @@ class PoeCog:
 
         return result.json()['lines']
 
-    def ninja_get_gem(self, gem):
+    def ninja_heist_gems(self, heist_gems):
         """
         Searches poe.ninja's skill gem listings and returns the prices of all gems matching the name.
+        Corrupted (including 21 or 23q gems), awakened, and normal gems are ignored.
         :param gem: Name of the gem
         :return: dict containing the gem names and their prices
         """
+        heist_gems = [gem.lower() for gem in heist_gems]
+
         params = self.ninja_data.copy()
         params['type'] = 'SkillGem'
         result = requests.get(self.ninja_url_item, params=params)
         gems = result.json()['lines']
         answer = {}
         for entry in gems:
-            if gem.lower() in entry['name'].lower():
-                if '21' in entry['variant'] or '23' in entry['variant'] or 'c' in entry['variant']:
+            gem_name = entry['name']
+            gem_variant = entry['variant']
+            if any(list(map(lambda gem: gem in gem_name.lower(), heist_gems))):
+                if 'Awakened' in gem_name:
+                    continue
+                if '21' in gem_variant or '23' in gem_variant or 'c' in gem_variant:
+                    continue
+                if 'Phantasmal' not in gem_name and 'Anomalous' not in gem_name and 'Divergent' not in gem_name:
                     continue
                 answer[f'{entry["variant"]} {entry["name"]}'] = entry['chaosValue']
         return answer

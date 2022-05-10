@@ -243,7 +243,7 @@ async def get_heist_gems(ctx, *args):
         variant_indentation = ' ' * (max_variant_length - len(gem_name_split[0]))
         name_indentation = ' ' * (max_gem_name_length - len(' '.join(gem_name_split[1:])))
         response += f'\n{gem_name_split[0]}{variant_indentation}\t' \
-                    f'{" ".join(gem_name_split[1:])}{name_indentation}:\t' \
+                    f'{" ".join(gem_name_split[1:])}{name_indentation} :\t' \
                     f'{gem_prices[gem]}'
     response += '```'
     await ctx.send(response)

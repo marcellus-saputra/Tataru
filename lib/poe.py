@@ -181,16 +181,17 @@ class PoeCog:
         answer = {}
         for entry in gems:
             gem_name = entry['name']
-            gem_variant = entry['variant']
             gem_level = entry['gemLevel']
             if any(list(map(lambda gem: gem in gem_name.lower(), heist_gems))):
                 if 'Awakened' in gem_name:
                     continue
-                if '21' in gem_variant or '23' in gem_variant or 'c' in gem_variant:
+                if 'corrupted' in entry.keys():
+                    continue
+                if gem_level < 16:
                     continue
                 if 'Phantasmal' not in gem_name and 'Anomalous' not in gem_name and 'Divergent' not in gem_name:
                     continue
-                answer[f'{gem_variant} {gem_name}'] = entry['chaosValue']
+                answer[f'{gem_level} {gem_name}'] = entry['chaosValue']
         return answer
 
 

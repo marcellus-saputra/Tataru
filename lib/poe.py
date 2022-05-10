@@ -192,6 +192,15 @@ class PoeCog:
                 if 'Phantasmal' not in gem_name and 'Anomalous' not in gem_name and 'Divergent' not in gem_name:
                     continue
                 answer[f'{gem_level} {gem_name}'] = entry['chaosValue']
+
+        answer_copy = answer.copy()
+        levels = ['17', '18', '19', '20']
+        for level in levels:
+            for gem in answer_copy.keys():
+                if level in gem:
+                    if '16 ' + gem[3:] in answer.keys():
+                        answer.pop(gem)
+
         return answer
 
 

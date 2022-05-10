@@ -221,13 +221,12 @@ async def tags(ctx):
     response = 'Tataru says:\n> https://www.pathofexile.com/trade/about'
     await ctx.send(response)
 
-@bot.command(name="gem")
-async def get_gems(ctx, *args):
+@bot.command(name="heist_gems")
+async def get_heist_gems(ctx, *args):
     """
-    Search poe.ninja prices for skill gems matching the given name.
+    Search poe.ninja prices for skill gems matching the given names. Made for heisting.
     """
-    gem_name = ' '.join(args)
-    gem_prices = bd.poe_cog.ninja_get_gem(gem_name)
+    gem_prices = bd.poe_cog.ninja_heist_gems(args)
 
     if len(gem_prices) == 0:
         response = 'Tataru says:\n> No results found.'
@@ -243,7 +242,9 @@ async def get_gems(ctx, *args):
         gem_name_split = gem.split()
         variant_indentation = ' ' * (max_variant_length - len(gem_name_split[0]))
         name_indentation = ' ' * (max_gem_name_length - len(' '.join(gem_name_split[1:])))
-        response += f'\n{gem_name_split[0]}{variant_indentation}\t{" ".join(gem_name_split[1:])}{name_indentation}:\t{gem_prices[gem]}'
+        response += f'\n{gem_name_split[0]}{variant_indentation}\t' \
+                    f'{" ".join(gem_name_split[1:])}{name_indentation}:\t' \
+                    f'{gem_prices[gem]}'
     response += '```'
     await ctx.send(response)
     return

@@ -63,7 +63,7 @@ class PoeCog:
             'User-Agent': 'marcellusgaming@gmail.com'
         }
 
-    def __query(self, query_data, listings_to_get):
+    def query_bulk(self, query_data, listings_to_get):
         data = json.dumps(query_data)
         r = requests.post(self.bulk_exchange_url, headers=self.headers, data=data)
         response_json = r.json()
@@ -90,7 +90,7 @@ class PoeCog:
         bulk_data['exchange']['have'].append('exalted')
         bulk_data['exchange']['want'].append(item)
 
-        query_result = self.__query(bulk_data, listings_to_print)
+        query_result = self.query_bulk(bulk_data, listings_to_print)
 
         listings_list = []
 
@@ -117,7 +117,7 @@ class PoeCog:
         bulk_data['exchange']['want'].append(item)
         bulk_data['exchange']['minimum'] = min_stock
 
-        query_result = self.__query(bulk_data, listings_to_print)
+        query_result = self.query_bulk(bulk_data, listings_to_print)
 
         listings_list = []
 

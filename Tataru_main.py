@@ -13,6 +13,7 @@ class BotData:
         load_dotenv()
         self.TOKEN = os.getenv('DISCORD_TOKEN')
         self.GUILD = os.getenv('DISCORD_GUILD')
+        self.ENV = os.getenv('ENVIRONMENT')
 
         print("Initializing PoE Trade integration...")
         self.poe_cog = poe.PoeCog()
@@ -22,14 +23,15 @@ class BotData:
 
 
 bd = BotData()
-bot = commands.Bot(command_prefix="%")
+bot = commands.Bot(command_prefix=
+                   "*" if bd.ENV == 'dev' else "%")
 bot.add_cog(warframe.WarframeCog(bot))
 bot.add_cog(nsfw.NsfwCog(bot))
 
 @bot.event
 async def on_ready():
     guild = discord.utils.get(bot.guilds, name=bd.GUILD)
-    print(f'{bot.user} has connected to {guild.name}!')
+    #print(f'{bot.user} has connected to {guild.name}!')
     print("Populating Blackjack model...")
     bd.bj_model.populate()
 

@@ -9,7 +9,7 @@ class PoeCog:
 
     def __init__(self):
         load_dotenv()
-        self.cookie = 'POESEDDID=' + os.getenv('POESESSID')
+        self.cookie = 'POESESSID=' + os.getenv('POESESSID')
         self.league = os.getenv('POE_LEAGUE')
 
         self.headers = {'Content-Type': 'application/json',

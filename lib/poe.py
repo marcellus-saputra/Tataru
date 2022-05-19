@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from bs4 import BeautifulSoup as soup
 
 
-class PoeCog:
+class PoeUtil:
 
     def __init__(self):
         load_dotenv()
@@ -30,7 +30,8 @@ class PoeCog:
                 'want': [],
                 'minimum': 1,
                 'fulfillable': True
-            }
+            },
+            'engine': 'new'
         }
 
         self.ninja_url = 'https://poe.ninja/api/data/currencyoverview'
@@ -68,7 +69,7 @@ class PoeCog:
         r = requests.post(self.bulk_exchange_url, headers=self.headers, data=data)
         response_json = r.json()
 
-        bulk_listings = response_json['result'][:listings_to_get]
+        bulk_listings = list(response_json['result'])[:listings_to_get]
         query_id = response_json['id']
         fetch_data = {'query': query_id, 'exchange': True}
 
